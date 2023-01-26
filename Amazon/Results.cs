@@ -30,7 +30,6 @@ namespace Amazon
             string xpLink = ".//*[@class='a-section a-spacing-small a-spacing-top-small']//descendant::a[@class='a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal']";
             string xpTitel = ".//*[@class='a-section a-spacing-none puis-padding-right-small s-title-instructions-style']//descendant::h2[@class='a-size-mini a-spacing-none a-color-base s-line-clamp-2']";
             string xpPrice = ".//span[@class='a-price' and translate(descendant::span[@class='a-offscreen']//.,'$','')]"; ;
-             //   "//*[@class ='a-price']//descendant::span[@class = 'a-offscreen'][1]";
             string xp = "//div[@class ='a-section'";
             foreach (KeyValuePair<string, string> filter in filters)
             {
