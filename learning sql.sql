@@ -94,6 +94,21 @@ select p.ProductID,p.ProductName,p.UnitPrice
 	,IIF( p.UnitPrice < 100,format(p.UnitPrice*0.85,'N2'),format(p.UnitPrice*0.805,'N2'))))
 from Products p
 
+--JOIN
+--inner join - all the match cells
+select c.CustomerID , c.ContactName , o.OrderID from 
+Customers as c
+join Orders as o on c.CustomerID=o.CustomerID
+
+--return all customers with 2 customers that dont have order
+select c.CustomerID , c.ContactName , o.OrderID 
+from Customers as c
+left join Orders as o on c.CustomerID=o.CustomerID
+order by o.OrderID
+
+
+
+
 
 
 
