@@ -1,5 +1,3 @@
---Northwind DB
-
 select DATEDIFF(DD,OrderDate,ShippedDate) 
 from Orders 
 where  DATEDIFF(DD,OrderDate,ShippedDate) >6
@@ -57,6 +55,46 @@ from Products p
 select TRY_CAST('31/02/2023' as datetime)
 
 select cast('31/02/2023' as datetime)
+
+--Case IIF
+--CASE
+--.
+--.
+--END
+--NULL is the default or use in else
+
+select p.ProductID,p.ProductName,p.UnitPrice
+	, case 
+	when p.UnitPrice < 20 then 1
+	when p.UnitPrice < 50 then 2
+	when p.UnitPrice < 100 then 3
+	else 4
+	END
+from Products p
+
+select p.ProductID,p.ProductName,p.UnitPrice
+	, case 
+	when p.UnitPrice < 20 then format(p.UnitPrice*0.95,'N2')
+	when p.UnitPrice < 50 then format(p.UnitPrice*0.90,'N2')
+	when p.UnitPrice < 100 then format(p.UnitPrice*0.85,'N2')
+	else format(p.UnitPrice*0.80,'N2')
+	END as afterDiscount
+from Products p
+--print only 2 number after . without round the number
+select format(10.2345,'N2') as formatint
+
+--IIF(condition,if true,if false)
+select p.ProductID,p.ProductName,p.UnitPrice
+	,IIF(p.UnitPrice < 20,1,2)
+from Products p
+
+select p.ProductID,p.ProductName,p.UnitPrice
+	,IIF(p.UnitPrice < 20,format(p.UnitPrice*0.95,'N2')
+	,IIF( p.UnitPrice < 50,format(p.UnitPrice*0.90,'N2')
+	,IIF( p.UnitPrice < 100,format(p.UnitPrice*0.85,'N2'),format(p.UnitPrice*0.805,'N2'))))
+from Products p
+
+
 
 
 
