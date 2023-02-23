@@ -261,7 +261,7 @@ where  EXISTS
 
 
 --Subquery in from
-
+--טבלה זמנית שניתן לגשת אליה
 select UnitPrice*1.17 as afterTax from Products
 
 select * from (select UnitPrice*1.17  as afterTax from Products)p
