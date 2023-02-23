@@ -151,6 +151,65 @@ declare @x as bit
 set @x=1
 print @x
 
+--range 1-8000 char
+--nchar -hebrew and arab .... global size
+--char for number and english like id global size
+--varchar - english for lsat name dynamic size
+--nvarchar - hebrew for last name dynamic size
+
+
+--ROLLUP(all field in group by)->doing sum in this way :
+--a,b,c
+--a,b
+--a
+
+select year(o.OrderDate) as year , MONTH(o.OrderDate) as month ,
+o.EmployeeID as EmployeeID ,
+count(*) as cnt
+from Orders o
+group by ROLLUP( year(o.OrderDate)  , MONTH(o.OrderDate),o.EmployeeID)
+
+
+
+
+
+select YEAR(o.OrderDate) as year, datepart (QQ, o.OrderDate) q ,
+sum(od.UnitPrice*od.Quantity*(1-od.[Discount])) count
+from Orders o join [Order Details] od on o.OrderID = od.OrderID 
+group by ROLLUP( YEAR(o.OrderDate)  ,datepart (QQ, o.OrderDate) )
+
+
+--sub query
+--1. single row
+--2. multi row
+
+--1. single row
+-- =,>,<,<=,>=,<>
+
+select * from Products p 
+where p.UnitPrice >
+(select avg(p.UnitPrice) from Products p)
+
+select * from Employees e
+where e.HireDate>
+(select e.HireDate from Employees e
+where e.EmployeeID=5)
+
+select * from Employees e
+where year(e.HireDate)=
+(select year(e.HireDate) from Employees e
+where e.EmployeeID=3) and e.EmployeeID<>3
+
+
+select p.CategoryID ,c.CategoryName, avg(p.UnitPrice) from Products p
+join Categories as c on c.CategoryID=p.CategoryID
+group by p.CategoryID ,c.CategoryName
+having avg(p.UnitPrice)>
+(select avg(p.UnitPrice) from Products p 
+where p.CategoryID=1) 
+
+
+
 
 
 
