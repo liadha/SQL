@@ -1,0 +1,159 @@
+select upper(productName),lower(productName)
+from products
+
+select productName,left(productName,2),right(productName,2)
+from products
+
+select productName,substring(productName,2,2)
+from products
+
+select productName,charindex('al',productName)
+from products
+where charindex('al',ProductName)!=0
+
+select productName,charindex('al',productName,4)
+from products
+where charindex('al',ProductName,4)!=0
+
+select productName,len(productName)
+from products
+
+select productName,replace(productName,'al','*')
+from products
+
+select productName,left(replace(productName,'al','*'),1)
+from products
+
+select productName,charindex('*',replace(productName,'al','*'))
+from products
+
+select '#'+trim(' hello ')+'#','#'+ltrim(' hello ')+'#','#'+rtrim(' hello ')+'#'
+
+select reverse(productName)
+from products
+
+select concat(firstName,' ',employeeID)
+from employees
+
+select getdate()+60,
+	   year(getdate()),
+	   month(getdate()),
+	   day(getdate()),
+	   datepart(hour,getdate()),
+	   datepart(quarter,getdate()),
+	   datepart(weekday,getdate()),
+	   datename(weekday,getdate()),
+	   datename(month,getdate())
+
+select datediff(year,birthDate,getdate())
+from employees
+
+select datediff(day,orderDate,shippedDate)
+from orders
+where datediff(day,orderDate,shippedDate)>7
+
+select datediff(year,dateadd(year,3,birthDate),getdate())
+from employees
+where datediff(year,dateadd(year,3,birthDate),getdate())>66
+
+select eomonth(getdate())
+
+select cast(1 as varchar)+'a'
+select convert(varchar,1)+'a'
+
+select unitPrice*1.17,ceiling(unitPrice*1.17),floor(unitPrice*1.17),round(unitPrice*1.17,0)
+from products
+
+select try_cast('a' as int)
+
+select unitPrice,case when unitPrice<20 then 1 when unitPrice<50 then 2 when unitPrice<100 then 3 else 4 end
+from products
+
+select format(73.2345,'n2')
+
+select unitPrice,iif(unitPrice<20,1,2)
+from products
+
+select customers.customerID,contactName,orderID
+from customers left join orders
+on customers.customerID=orders.customerID
+order by orderID
+
+select customers.customerID,orderID
+from customers left join orders
+on customers.customerID=orders.customerID
+where customers.customerID like 'f%'
+order by orderID
+
+select customers.customerID,orders.orderID
+from customers 
+left join orders on customers.customerID=orders.customerID
+left join [order details] on orders.orderID=[order details].orderID
+left join products on [order details].productID=products.productID
+
+select employees.firstName+' '+employees.lastName as employees,managers.firstName+' '+managers.lastName as managers
+from employees join employees as managers
+on employees.reportsTo=managers.employeeID
+
+select sum(p.UnitPrice) as sum ,
+avg(p.UnitPrice) as avg,
+MIN(p.UnitPrice) as min ,
+max(p.UnitPrice) as max,
+count(p.UnitPrice) as count
+from products p
+
+select p.CategoryID,
+sum(p.UnitPrice) as sum ,
+avg(p.UnitPrice) as avg,
+MIN(p.UnitPrice) as min ,
+max(p.UnitPrice) as max,
+count(p.UnitPrice) as count
+from products p
+where p.CategoryID in (1,7)
+group by p.CategoryID
+
+
+select  year(o.OrderDate) as yearOrder,month(o.OrderDate) as monthOrder,
+count(o.OrderID) as countOrder,sum(od.UnitPrice) as costOrder, avg(od.UnitPrice) as avgOrder
+from Orders o
+join [order details] as od on od.OrderID=o.OrderID
+group by year(o.OrderDate),month(o.OrderDate) 
+order by  year(o.OrderDate),month(o.OrderDate) 
+
+
+select  year(o.OrderDate) as yearOrder,month(o.OrderDate) as monthOrder,
+count(o.OrderID) as countOrder,sum(od.UnitPrice) as costOrder, avg(od.UnitPrice) as avgOrder
+from Orders o
+join [order details] as od on od.OrderID=o.OrderID
+group by year(o.OrderDate),month(o.OrderDate) 
+having sum(od.UnitPrice)>2000
+order by  year(o.OrderDate),month(o.OrderDate) 
+
+--category name contain 'c'
+--avg >25
+--sum>2000
+
+select year(o.OrderDate) year , MONTH(o.OrderDate) as month,
+count(o.OrderID) count , SUM(od.UnitPrice) sum , AVG(od.UnitPrice) avg
+from Orders o 
+join [Order Details] od on o.OrderID = od.OrderID
+join Products p on p.ProductID = od.ProductID
+join Categories c on c.CategoryID = p.CategoryID
+where c.CategoryName like '%c%'
+group by year(o.OrderDate) , MONTH(o.OrderDate)
+Having  SUM(od.UnitPrice) > 2000 and AVG(od.UnitPrice) > 25 
+order by year(o.OrderDate)  , MONTH(o.OrderDate)
+
+
+--variable
+
+declare @x as bit
+set @x=1
+print @x
+
+
+
+
+
+
+
