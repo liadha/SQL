@@ -208,6 +208,68 @@ having avg(p.UnitPrice)>
 (select avg(p.UnitPrice) from Products p 
 where p.CategoryID=1) 
 
+--2. multi row
+-- IN , NOT IN , ANY , ALL , EXISTS , NOT EXISTS
+
+
+select * from Employees e
+where year(e.HireDate) in 
+(select year(e.HireDate) from Employees e
+where e.EmployeeID in (1,5)) and e.EmployeeID not in (1,5)
+
+select p.CategoryID ,c.CategoryName ,avg(p.UnitPrice) from  Products p
+join Categories as c on c.CategoryID=p.CategoryID
+group by p.CategoryID ,c.CategoryName
+having avg(p.UnitPrice)>(select avg(p.UnitPrice) from Products p
+where p.CategoryID in (1,3))
+
+
+select p.ProductName,p.ProductID from Products p
+where p.UnitPrice >
+(select avg(p.UnitPrice) from Products p
+where p.UnitsInStock >50)
+
+--ANY-in range that return
+-- : > from min
+--: < from max
+--ALL-grether then max or smaler then min - out of range
+-- : > from max
+-- : < from min
+
+select p.ProductID,p.ProductName , p.UnitPrice from Products p
+where p.UnitPrice>
+ALL(select  p.UnitPrice from Products p where p.CategoryID=7)
+
+select p.ProductID,p.ProductName , p.UnitPrice from Products p
+where p.UnitPrice>
+ANY(select  p.UnitPrice from Products p where p.CategoryID=7)
+
+
+--EXISTS - return true/false
+--NOT EXISTS
+
+select c.CustomerID from customers c
+where  not EXISTS
+(select o.CustomerID from Orders o where o.CustomerID=c.CustomerID)
+
+select s.CompanyName
+from Suppliers as s 
+join Products as p on p.SupplierID = s.SupplierID 
+join Categories as c on c.CategoryID = p.CategoryID
+where  EXISTS 
+(select c.CategoryName from Categories as c where c.CategoryName like 'Beverages' and c.CategoryID=p.CategoryID )
+
+
+--Subquery in from
+
+select UnitPrice*1.17 as afterTax from Products
+
+select * from (select UnitPrice*1.17  as afterTax from Products)p
+where p.afterTax>100
+
+
+
+
 
 
 
