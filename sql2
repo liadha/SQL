@@ -303,7 +303,25 @@ select * from B
 
 
 
+select o.ShipCity,o.ShipCountry,o.ShipRegion from Orders o
+union 
+select e.City,e.Country,e.Region from Employees e 
 
+select o.ShipCity,o.ShipCountry,o.ShipRegion , null from Orders o
+union 
+select e.City,e.Country,e.Region , e.Address from Employees e 
+
+select o.ShipCity,o.ShipCountry,o.ShipRegion , null from Orders o
+where ShipCountry in ('UK','USA')
+EXCEPT 
+select e.City,e.Country,e.Region , e.Address from Employees e 
+order by ShipCountry
+
+
+select * from (select o.ShipCity,o.ShipCountry,o.ShipRegion , null as address from Orders o
+EXCEPT 
+select e.City,e.Country,e.Region , e.Address from Employees e ) t
+where t.ShipCountry  in ('UK','USA')
 
 
 
