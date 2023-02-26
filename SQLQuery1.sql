@@ -132,3 +132,56 @@ from Products p
 where p.CategoryID=1
 
 
+----------------------------------------------------
+
+select SH.SalesPersonID,SH.OrderDate,SH.TotalDue,
+ROW_NUMBER()over(partition by SalesPersonID order by TotalDue desc) rownum
+from Sales.SalesOrderHeader SH
+where SalesPersonID is not null
+
+select * from (select SH.SalesPersonID,SH.OrderDate,SH.TotalDue,
+ROW_NUMBER()over(partition by SalesPersonID order by TotalDue desc) rownum
+from Sales.SalesOrderHeader SH
+where SalesPersonID is not null)s
+where s.rownum=1
+order by s.TotalDue
+
+
+
+
+
+select  ROW_NUMBER()over(order by SH.SalesOrderID) as rownumber,
+SH.SalesOrderID , SH.RevisionNumber ,SH.OrderDate , SH.DueDate , SH.ShipDate
+from  Sales.SalesOrderHeader SH
+where ROW_NUMBER()over(order by SH.SalesOrderID)  between 60 and 80
+
+select *
+from (select *,ROW_NUMBER()over(order by SalesOrderID) rownum
+from Sales.SalesOrderHeader) as t
+where t.rownum between 60 and 80
+
+
+select *
+from (select CustomerID, 
+	   SalesOrderID, 
+	   OrderDate,
+	   ROW_NUMBER()over(partition by CustomerID order by OrderDate desc) rownum
+from Sales.SalesOrderHeader) as t
+where t.rownum in (1)
+
+
+select pp.BusinessEntityID,concat(pp.FirstName,' ',pp.LastName) as employeeName,
+format(sp.SalesLastYear,'N'),
+rank()over(order by sp.SalesLastYear desc) as RK
+from Sales.SalesPerson sp
+join Person.Person pp on pp.BusinessEntityID=sp.BusinessEntityID
+where sp.SalesLastYear >0
+
+
+select so.CustomerID ,concat(pp.FirstName,' ',pp.LastName) as employeeName,
+count(*)over(partition by so.CustomerID ) as num,
+rank()over(order by so.CustomerID desc) as RK
+from Sales.SalesOrderHeader so
+join Sales.Customer sc on sc.CustomerID=so.CustomerID
+join Person.Person pp on pp.BusinessEntityID=sc.PersonID
+
