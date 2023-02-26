@@ -189,3 +189,10 @@ join Person.Person pp on pp.BusinessEntityID=sc.PersonID
 group by  so.CustomerID ,concat(pp.FirstName,' ',pp.LastName)
 )rk
 where rk<=5
+--------
+--ntile 
+
+select  p.ProductID,p.CategoryID,p.UnitPrice,
+NTILE(3)over(order by p.UnitPrice) as ntile
+from Products p
+where CategoryID=1
