@@ -1,6 +1,6 @@
 --window function
---over()-αψξϊ δθαμδ ξηζιψ ηιωεα λμμι
---over  ΰιο φεψκ αβψετ
+--over()-Χ‘Χ¨ΧΧª Χ”ΧΧ‘ΧΧ” ΧΧ—Χ–Χ™Χ¨ Χ—Χ™Χ©Χ•Χ‘ Χ›ΧΧΧ™
+--over  ΧΧ™Χ Χ¦Χ•Χ¨Χ Χ‘Χ’Χ¨Χ•Χ¤
 
 select p.CategoryID,p.ProductName,p.UnitPrice,
 avg(p.UnitPrice) over() as avg,
@@ -26,8 +26,8 @@ concat(((avg(p.UnitPrice) over() - p.UnitPrice)/avg(p.UnitPrice) over())*100 ,'%
 from Products p
 
 --over(partition by  _____col name____)
---ΰιο φεψκ αβψετ
---ςεωδ ηιωεα λμμι μωγδ ξαεχω
+--ΧΧ™Χ Χ¦Χ•Χ¨Χ Χ‘Χ’Χ¨Χ•Χ¤
+--ΧΆΧ•Χ©Χ” Χ—Χ™Χ©Χ•Χ‘ Χ›ΧΧΧ™ ΧΧ©Χ“Χ” ΧΧ‘Χ•Χ§Χ©
 
 select od.OrderID,od.ProductID,sum(od.UnitPrice*od.Quantity*(1-od.Discount))over(partition by  od.OrderID),
 sum(od.UnitPrice*od.Quantity*(1-od.Discount)) over() as sum
@@ -47,8 +47,8 @@ where p.UnitPrice>p.avgbycat
 
 --over(order by  _____col name____)
 --order by
---ρελν ΰϊ ςφξε εΰϊ λμ δωγεϊ μτπιε
---ΰν ιω λτιμειεϊ ρελν ΰεϊο αρεσ
+--Χ΅Χ•Χ›Χ ΧΧª ΧΆΧ¦ΧΧ• Χ•ΧΧª Χ›Χ Χ”Χ©Χ“Χ•Χª ΧΧ¤Χ Χ™Χ•
+--ΧΧ Χ™Χ© Χ›Χ¤Χ™ΧΧ•Χ™Χ•Χª Χ΅Χ•Χ›Χ ΧΧ•ΧªΧ Χ‘Χ΅Χ•Χ£
 
 select p.CategoryID,p.ProductID,p.UnitPrice,
 sum(p.UnitPrice)over(order by p.UnitPrice) as avgbycat
@@ -64,10 +64,71 @@ join [Order Details] od on od.OrderID=o.OrderID
 where year(o.OrderDate)=1996
 
 --rows between unbounded preceding and current row
---ξηωα λμ ωεψδ βν ΰν ιω λτεμιν
+--ΧΧ—Χ©Χ‘ Χ›Χ Χ©Χ•Χ¨Χ” Χ’Χ ΧΧ Χ™Χ© Χ›Χ¤Χ•ΧΧ™Χ
 select p.CategoryID,p.ProductID,p.UnitPrice,
 sum(p.UnitPrice)over(order by p.UnitPrice rows between unbounded preceding and current row) as avgbycat
 from Products p
 where  p.CategoryID in (1)
 
-select p.CategoryID ,p.ProductID, p.UnitPrice,sum(p.UnitPrice) over(order by  p.unitprice) as sumwithnocalc, sum(p.UnitPrice) over( partition by CategoryID order by  p.unitpricerows between unbounded preceding and current row)as sumunitpricefrom Products pwhere CategoryID in (1,7)--row numberselect p.CategoryID ,p.ProductID, p.UnitPrice,ROW_NUMBER()over(partition by CategoryID order by UnitPrice ) as rownumberfrom Products pwhere CategoryID in (1,7)select p.CategoryID ,p.ProductID, p.UnitPrice,ROW_NUMBER()over(order by UnitPrice ) as rownumberfrom Products pwhere CategoryID in (1,7)select * from (select p.CategoryID ,p.ProductID, p.UnitPrice,ROW_NUMBER()over(partition by CategoryID order by UnitPrice desc) as rownumberfrom Products pwhere CategoryID in (1,7))pwhere p.rownumber=1select  p.CategoryID , max(p.UnitPrice)from Products pwhere CategoryID in (1,7)group by  p.CategoryID 
+select p.CategoryID ,p.ProductID, p.UnitPrice
+,sum(p.UnitPrice) over(order by  p.unitprice) as sumwithnocalc
+, sum(p.UnitPrice) over( partition by CategoryID order by  p.unitprice
+rows between unbounded preceding and current row)
+as sumunitprice
+from Products p
+where CategoryID in (1,7)
+
+--row number
+select p.CategoryID ,p.ProductID, p.UnitPrice,
+ROW_NUMBER()over(partition by CategoryID order by UnitPrice ) as rownumber
+from Products p
+where CategoryID in (1,7)
+
+select p.CategoryID ,p.ProductID, p.UnitPrice,
+ROW_NUMBER()over(order by UnitPrice ) as rownumber
+from Products p
+where CategoryID in (1,7)
+
+
+select * from (
+select p.CategoryID ,p.ProductID, p.UnitPrice,
+ROW_NUMBER()over(partition by CategoryID order by UnitPrice desc) as rownumber
+from Products p
+where CategoryID in (1,7)
+)p
+where p.rownumber=1
+
+select  p.CategoryID , max(p.UnitPrice)
+from Products p
+where CategoryID in (1,7)
+group by  p.CategoryID 
+
+select p.CategoryID ,p.ProductID, p.UnitPrice, max(p.UnitPrice)
+from Products p
+where  p.UnitPrice=any(select  max(p.UnitPrice)
+from Products p where CategoryID in (1,7) group by  p.CategoryID )
+group by  p.CategoryID ,p.ProductID, p.UnitPrice
+
+
+
+--rank
+--Χ“Χ™Χ¨Χ•Χ’ Χ‘ΧªΧ•Χ Χ§Χ‘Χ•Χ¦Χ” 
+select p.ProductID,p.CategoryID,p.UnitPrice,
+RANK()over(partition by  p.CategoryID order by p.UnitPrice )as rank
+from Products p
+where p.CategoryID=1
+
+select p.ProductID,p.CategoryID,p.UnitPrice,
+dense_RANK()over(partition by  p.CategoryID order by p.UnitPrice )as rank
+from Products p
+where p.CategoryID=1
+
+
+select p.ProductID,p.CategoryID,p.UnitPrice,
+RANK()over(partition by  p.CategoryID order by p.UnitPrice )as rank,
+dense_RANK()over(partition by  p.CategoryID order by p.UnitPrice )as dense,
+row_number()over(partition by  p.CategoryID order by p.UnitPrice )as rownum
+from Products p
+where p.CategoryID=1
+
+
