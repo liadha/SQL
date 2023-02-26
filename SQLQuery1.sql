@@ -179,6 +179,7 @@ where sp.SalesLastYear >0
 
 
 
+select * from(
 select so.CustomerID ,concat(pp.FirstName,' ',pp.LastName) as employeeName,
 count(*)as num,
 dense_rank()over(order by count(so.CustomerID)desc) as RK
@@ -186,4 +187,5 @@ from Sales.SalesOrderHeader so
 join Sales.Customer sc on sc.CustomerID=so.CustomerID
 join Person.Person pp on pp.BusinessEntityID=sc.PersonID
 group by  so.CustomerID ,concat(pp.FirstName,' ',pp.LastName)
-
+)rk
+where rk<=5
