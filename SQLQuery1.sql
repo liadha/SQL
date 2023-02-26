@@ -196,3 +196,16 @@ select  p.ProductID,p.CategoryID,p.UnitPrice,
 NTILE(3)over(order by p.UnitPrice) as ntile
 from Products p
 where CategoryID=1
+
+--lag,lead
+--מאיזה שורה לקחת את הערך הקודם
+select  p.ProductID,p.CategoryID,p.UnitPrice,
+lag(p.UnitPrice,1)over(order by p.UnitPrice) as lag
+from Products p
+where CategoryID=1
+
+--מאיזה שורה לקחת את הערך אחד קדימה
+select  p.ProductID,p.CategoryID,p.UnitPrice,
+lead(p.UnitPrice,1)over(order by p.UnitPrice) as lead
+from Products p
+where CategoryID=1
