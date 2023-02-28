@@ -1,6 +1,6 @@
 -- Views
--- ωξιψϊ ωΰιμϊεϊ ωηεζψεϊ ςμ ςφξο
--- ωεξψ ΰϊ δγϊψ αζιλψεο χΰω εωεμσ ξων εμλο ιεϊψ ιςιμ εξδιψ
+-- Χ©ΧΧ™Χ¨Χª Χ©ΧΧ™ΧΧªΧ•Χª Χ©Χ—Χ•Χ–Χ¨Χ•Χª ΧΆΧ ΧΆΧ¦ΧΧ
+-- Χ©Χ•ΧΧ¨ ΧΧª Χ”Χ“ΧªΧ¨ Χ‘Χ–Χ™Χ›Χ¨Χ•Χ Χ§ΧΧ© Χ•Χ©Χ•ΧΧ£ ΧΧ©Χ Χ•ΧΧ›Χ Χ™Χ•ΧªΧ¨ Χ™ΧΆΧ™Χ Χ•ΧΧ”Χ™Χ¨
 create VIEW v_Customers_Orders
 as
 select o.OrderID,o.ProductID,p.ProductName ,p.UnitPrice,c.CompanyName
@@ -39,9 +39,9 @@ from v_AllCustomers_Orders v
 join Employees e on e.EmployeeID=v.EmployeeID
 
 -- Simple view
---ξηζιψ πϊεπιν ξθαμδ ΰηϊ
---πιϊο μωπεϊ γψβε πϊεπιν αθαμδ δξχεψιϊ
---πιϊο μξηεχ πϊεπιν
+--ΧΧ—Χ–Χ™Χ¨ Χ ΧªΧ•Χ Χ™Χ ΧΧΧ‘ΧΧ” ΧΧ—Χª
+--Χ Χ™ΧªΧ ΧΧ©Χ Χ•Χª Χ“Χ¨Χ’Χ• Χ ΧªΧ•Χ Χ™Χ Χ‘ΧΧ‘ΧΧ” Χ”ΧΧ§Χ•Χ¨Χ™Χª
+--Χ Χ™ΧªΧ ΧΧΧ—Χ•Χ§ Χ ΧªΧ•Χ Χ™Χ
 
 create VIEW v_Products_cat1
 as
@@ -62,7 +62,7 @@ from v_Products_cat1
 select * from Products 
 where CategoryID=1
 
---θψπζχφιδ διΰ ρθ τχεγεϊ αξιγδ εΰηγ πλωμ λεμν πλωμιν αξιγδ εμΰ λεμο ξαεφςεϊ ιηγ
+--ΧΧ¨Χ Χ–Χ§Χ¦Χ™Χ” Χ”Χ™Χ Χ΅Χ Χ¤Χ§Χ•Χ“Χ•Χª Χ‘ΧΧ™Χ“Χ” Χ•ΧΧ—Χ“ Χ Χ›Χ©Χ Χ›Χ•ΧΧ Χ Χ›Χ©ΧΧ™Χ Χ‘ΧΧ™Χ“Χ” Χ•ΧΧ Χ›Χ•ΧΧ ΧΧ‘Χ•Χ¦ΧΆΧ•Χª Χ™Χ—Χ“
 
 begin tran
 update v_Products_cat1
@@ -96,7 +96,7 @@ where ProductID in(24,25,26)
 select * from v_AllCustomers_Orders
 where ProductID in(24,25,26)
 
---μΰ πιϊο μωπεϊ πϊεπιν ωπςωε ςμιδν ηιωεαιν
+--ΧΧ Χ Χ™ΧªΧ ΧΧ©Χ Χ•Χª Χ ΧªΧ•Χ Χ™Χ Χ©Χ ΧΆΧ©Χ• ΧΆΧΧ™Χ”Χ Χ—Χ™Χ©Χ•Χ‘Χ™Χ
 
 create view v_cat_unitprice
 as
@@ -111,15 +111,15 @@ commit
 
 
 -- T SQL 
--- δημχ δϊλπεϊι ωμ SQL
+-- Χ”Χ—ΧΧ§ Χ”ΧªΧ›Χ Χ•ΧªΧ™ Χ©Χ SQL
 
---δβγψϊ ξωϊπδ
+--Χ”Χ’Χ“Χ¨Χª ΧΧ©ΧªΧ Χ”
 declare @var varchar(20)
---δλπρϊ ςψκ μξωϊπδ
+--Χ”Χ›Χ Χ΅Χª ΧΆΧ¨Χ ΧΧΧ©ΧªΧ Χ”
 set @var=20
---δγτρϊ ξωϊπδ
+--Χ”Χ“Χ¤Χ΅Χª ΧΧ©ΧªΧ Χ”
 print @var
---δφβϊ ξωϊπδ αςξεγδ 
+--Χ”Χ¦Χ’Χª ΧΧ©ΧªΧ Χ” Χ‘ΧΆΧΧ•Χ“Χ” 
 select @var
 
 declare
@@ -142,7 +142,7 @@ print @avg_unitprice
 
 select * from Products
 where UnitPrice>@avg_unitprice
---δγψκ δπλεπδ ιεϊψ
+--Χ”Χ“Χ¨Χ Χ”Χ Χ›Χ•Χ Χ” Χ™Χ•ΧªΧ¨
 go
 declare
 @avg_unitprice money
