@@ -301,3 +301,24 @@ select *  from temp_Products
 where ProductID=5
 
 select * from A
+
+-- Switch case 
+
+create procedure get_discount2
+@prodID int
+as
+declare
+	@unitprice money,
+	@discount float
+	select @unitprice=p.UnitPrice from Products p
+	where p.ProductID=@prodID
+	set @discount = case when @unitprice<20 then 0.9
+						 when @unitprice<50 then 0.85
+						 else 0.8
+					end
+	select @unitprice*@discount as afterdiscount
+
+
+
+
+exec get_discount2 1
